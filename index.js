@@ -1,227 +1,112 @@
 Survey.StylesManager.applyTheme('modern');
 
 
-function canShowDynamicChoice(params) {
-    if (!params || params.length != 4) return true;
+function ValidateSumFields(params) {
     console.log("params:", params);
+    if (!params || params.includes(undefined)) return true;
 
     const panelValue = params[0] || [];
     const questionName = params[1];
-    const index = params[2] - 1;
-    const choiceValue = params[3];
+    // const index = params[2] - 1;
+    // const choiceValue = params[3];
 
-    for (let i = 0; i < panelValue.length; i++) {
-        if (i == index) { console.log("dentro continue", i, index); continue; }
-        if (panelValue[i][questionName] == choiceValue) {
-            console.log("dentro false", panelValue[i][questionName], choiceValue, panelValue, i, questionName); return false;
-        }
-    }
-    return true;
+    const initialValue = 0;
+    const totVal = panelValue.reduce(
+        (accumulator, currentValue) => accumulator + currentValue[questionName],
+        initialValue);
+
+    console.log("totVal : ", totVal)
+
+    return (totVal == 100) ? true : false;
+
+    // for (let i = 0; i < panelValue.length; i++) {
+    // if (i == index) { console.log("dentro continue", i, index); continue; }
+    // if (panelValue[i][questionName] == choiceValue) {
+    //     console.log("dentro false", panelValue[i][questionName], choiceValue, panelValue, i, questionName); return false;
+    // }
+    // }
+    // return true;
 }
 Survey.FunctionFactory.Instance.register(
-    'canShowDynamicChoice',
-    canShowDynamicChoice
+    'ValidateSumFields',
+    ValidateSumFields
 );
 
 const json = {
-    "questions": [
-        {
-            "type": 'paneldynamic',
-            "name": 'panel1',
-            "panelCount": 2,
-            "templateElements": [
-                {
-                    "name": 'question1',
-                    "type": 'dropdown',
-                    "choicesVisibleIf":
-                        "canShowDynamicChoice({panel1}, 'question1', {panelindex}, {item})",
-                    "choices": [
-                        'Item 1',
-                        'Item 2',
-                        'Item 3',
-                        'Item 4',
-                        'Item 5',
-                        'Item 6',
-                        'Item 7',
-                    ],
-                },
-                {
-                    "name": 'comment',
-                    "title": 'Please comment',
-                    "type": 'comment',
-                },
-            ],
-        },
-    ],
-};
-
-const jsonConPages = {
+    "title": "questionario",
     "pages": [
         {
             "name": "page1",
             "elements": [
                 {
                     "type": "paneldynamic",
-                    "name": "panel1",
+                    "name": "elemento1",
+                    "title": "elemento1",
                     "templateElements": [
                         {
-                            "type": "dropdown",
+                            "type": "text",
                             "name": "question1",
-                            "choicesVisibleIf": "canShowDynamicChoice({panel1}, 'tipo', {panelindex}, {item})",
-                            "choices": [
-                                "Item 1",
-                                "Item 2",
-                                "Item 3",
-                                "Item 4",
-                                "Item 5",
-                                "Item 6",
-                                "Item 7"
-                            ]
-                        },
-                        {
-                            "type": "comment",
-                            "name": "comment",
-                            "title": "Please comment"
+                            "isRequired": true,
+                            "validators": [
+                                {
+                                    "type": "expression",
+                                    "text": "Tutti i campi question 1 deveno avere una somma = 100",
+                                    "expression": "ValidateSumFields({elemento1},'question1')"
+                                }
+                            ],
+                            "inputType": "number"
                         }
                     ],
-                    "panelCount": 2
+                    "panelCount": 1,
+                    "minPanelCount": 1
+                }
+            ]
+        }
+    ],
+    "showQuestionNumbers": "off",
+    "checkErrorsMode": "onComplete"
+}
+
+const jsonTest = {
+    "checkErrorsMode": "onValueChanged",
+    "elements": [
+        {
+            "type": "html",
+            "name": "requesting",
+            "html": "The data is requesting",
+            "visibleIf": "{country_request_processing} = true"
+        },
+        {
+            "type": "text",
+            "name": "country",
+            "title": "Please enter the country name:",
+            "placeHolder": "Estonia",
+            "validators": [
+                {
+                    "type": "expression",
+                    "expression": "isCountryExist({country}) = true",
+                    "text": "We could not find country with this name."
                 }
             ]
         },
         {
-            "name": "page2",
-            "elements": [
-                {
-                    "type": "text",
-                    "name": "question2"
-                }
-            ]
+            "type": "expression",
+            "name": "officialName",
+            "title": "Oficial name {country} is:",
+            "expression": "getCountryOfficialName({country})",
+            "visibleIf": "{officialName} notempty"
+        },
+        {
+            "type": "expression",
+            "name": "region",
+            "title": "{country} is located in region:",
+            "expression": "getCountryRegion({country})",
+            "visibleIf": "{region} notempty"
         }
     ]
 }
 
-const jsonReale = {
-    "pages": [
-        {
-            "name": "page1",
-            "elements": [
-                {
-                    "type": "matrixdynamic",
-                    "name": "tipocertificato",
-                    "title": "tipocertificato",
-                    "columns": [
-                        {
-                            "name": "tipo",
-                            "cellType": "dropdown",
-                            "isUnique": true,
-                            "choicesVisibleIf": "canShowDynamicChoice({tipocertificato}, 'tipo', {rowindex}, {item})",
-                            "choices": [
-                                "cumulativo",
-                                "portatore",
-                                "nominativo"
-                            ]
-                        },
-                        {
-                            "name": "titoloAf",
-                            "cellType": "text"
-                        }
-                    ],
-                    "rowCount": 1,
-                    "maxRowCount": 2
-                },
-                {
-                    "type": "text",
-                    "name": "question1",
-                    "inputType": "number",
-                    "max": 10
-                },
-                {
-                    "type": "text",
-                    "name": "question2"
-                }
-            ]
-        }
-    ],
-    "checkErrorsMode": "onValueChanged",
-    "widthMode": "static"
-}
-
-const jsonTest = {
-    "pages": [
-        {
-            "name": "page1",
-            "questions": [
-                {
-                    "type": 'paneldynamic',
-                    "name": 'panel1',
-                    "panelCount": 2,
-                    "templateElements": [
-                        {
-                            "name": 'question1',
-                            "type": 'dropdown',
-                            "choicesVisibleIf":
-                                "canShowDynamicChoice({panel1}, 'question1', {panelindex}, {item})",
-                            "choices": [
-                                'Item 1',
-                                'Item 2',
-                                'Item 3',
-                                'Item 4',
-                                'Item 5',
-                                'Item 6',
-                                'Item 7',
-                            ],
-                        },
-                        {
-                            "name": 'comment',
-                            "title": 'Please comment',
-                            "type": 'comment',
-                        },
-                    ],
-                },
-            ],
-            "elements": [
-                {
-                    "type": "matrixdynamic",
-                    "name": "tipocertificato",
-                    "title": "tipocertificato",
-                    "columns": [
-                        {
-                            "name": "tipo",
-                            "cellType": "dropdown",
-                            "isUnique": true,
-                            "choicesVisibleIf": "canShowDynamicChoice({tipocertificato}, 'tipo', {rowindex}, {item})",
-                            "choices": [
-                                "cumulativo",
-                                "portatore",
-                                "nominativo"
-                            ]
-                        },
-                        {
-                            "name": "titoloAf",
-                            "cellType": "text"
-                        }
-                    ],
-                    "rowCount": 1,
-                    "maxRowCount": 2
-                },
-                {
-                    "type": "text",
-                    "name": "question1",
-                    "inputType": "number",
-                    "max": 10
-                },
-                {
-                    "type": "text",
-                    "name": "question2"
-                }
-            ]
-        }
-    ],
-    "checkErrorsMode": "onValueChanged",
-    "widthMode": "static"
-}
-
-const survey = new Survey.Model(jsonReale);
+const survey = new Survey.Model(json);
 
 
 survey.onComplete.add(function (sender) {
@@ -232,4 +117,6 @@ survey.onComplete.add(function (sender) {
 survey.render('surveyElement');
 
 
-
+// task
+// creare un panel dynamic che fa la somma dei campi  e tramite una custom function ,
+// la somma deve essere uguale a 100 , la validazione deve segnare un errore 
