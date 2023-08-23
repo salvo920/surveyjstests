@@ -4,6 +4,8 @@ json = {
 		{
 			"type": "dropdown",
 			"name": "panel1",
+			"minWidth": "33%",
+			"maxWidth": "33%",
 			"elements": [
 				{
 					"type": "text",
