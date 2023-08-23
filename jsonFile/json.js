@@ -2,7 +2,7 @@ json = {
 	"showQuestionNumbers": "off",
 	"questions": [
 		{
-			"type": "panel",
+			"type": "dropdown",
 			"name": "panel1",
 			"elements": [
 				{
@@ -10,7 +10,8 @@ json = {
 					"name": "question1"
 				}
 			],
-			"title": "Panel 1"
+			"title": "Panel 1",
+			"startWithNewLine": false
 		},
 		{
 			"type": "panel",
@@ -22,7 +23,58 @@ json = {
 				}
 			],
 			"title": "Panel 2",
+			"startWithNewLine": true
+		},
+		{
+			"type": "panel",
+			"name": "panel3",
+			"elements": [
+				{
+					"type": "text",
+					"name": "question3"
+				}
+			],
+			"title": "Panel 3",
+			"startWithNewLine": false
+		},
+		{
+			"type": "panel",
+			"name": "panel4",
+			"elements": [
+				{
+					"type": "text",
+					"name": "question3"
+				}
+			],
+			"title": "Panel 4",
+			"startWithNewLine": true
+		},
+		{
+			"type": "panel",
+			"name": "panel5",
+			"elements": [
+				{
+					"type": "text",
+					"name": "question3"
+				}
+			],
+			"title": "Panel 5",
+			"startWithNewLine": false
+		},
+		{
+			"type": "panel",
+			"name": "panel6",
+			"elements": [
+				{
+					"type": "text",
+					"name": "question3"
+				}
+			],
+			"title": "Panel 6",
 			"startWithNewLine": false
 		}
 	]
 };
+
+
+// task successiva 
