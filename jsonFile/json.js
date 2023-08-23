@@ -1,34 +1,28 @@
-export const json = {
-    "title": "questionario",
-    "pages": [
-        {
-            "name": "page1",
-            "elements": [
-                {
-                    "type": "paneldynamic",
-                    "name": "elemento1",
-                    "title": "elemento di test",
-                    "templateElements": [
-                        {
-                            "type": "text",
-                            "name": "question1",
-                            "isRequired": true,
-                            "validators": [
-                                {
-                                    "type": "expression",
-                                    "text": "Tutti i campi question 1 deveno avere una somma = 100",
-                                    "expression": "ValidateSumFields({elemento1},'question1')"
-                                }
-                            ],
-                            "inputType": "number"
-                        }
-                    ],
-                    "panelCount": 1,
-                    "minPanelCount": 1
-                }
-            ]
-        }
-    ],
-    "showQuestionNumbers": "off",
-    "checkErrorsMode": "onComplete"
-}
+json = {
+	"showQuestionNumbers": "off",
+	"questions": [
+		{
+			"type": "panel",
+			"name": "panel1",
+			"elements": [
+				{
+					"type": "text",
+					"name": "question1"
+				}
+			],
+			"title": "Panel 1"
+		},
+		{
+			"type": "panel",
+			"name": "panel2",
+			"elements": [
+				{
+					"type": "text",
+					"name": "question2"
+				}
+			],
+			"title": "Panel 2",
+			"startWithNewLine": false
+		}
+	]
+};
