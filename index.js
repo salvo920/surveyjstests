@@ -44,8 +44,3 @@ survey.onComplete.add(function (sender) {
 });
 
 survey.render('surveyElement');
-
-
-// task
-// creare un panel dynamic che fa la somma dei campi  e tramite una custom function ,
-// la somma deve essere uguale a 100 , la validazione deve segnare un errore 

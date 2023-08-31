@@ -1,0 +1,15 @@
+.container {
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.flex {
+	width: 30%;
+	height: 30px;
+	background-color: aquamarine;
+	margin-right: 10px;
+}
+
+.test {
+	flex-basis: 60%;
+}
